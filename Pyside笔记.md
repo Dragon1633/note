@@ -95,7 +95,7 @@ QPushButton是PyQt6中最常用的控件之一，它被称为按钮控件，允�
 
 QTDesigner
 
-![image-20240308114804894](image\image-20240308114804894.png)
+![image-20240308114804894](image/image-20240308114804894.png)
 
 ## 从一个窗口跳转到另外一个窗口
 

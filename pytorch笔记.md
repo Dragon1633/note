@@ -94,9 +94,9 @@ python 文件名.py --weight yolov5m.py --img 1280
 
 运行时默认赋予参数值
 
-<img src="image\image-20240425145900331.png" alt="image-20240425145900331" style="zoom:50%;" />
+<img src="image/image-20240425145900331.png" alt="image-20240425145900331" style="zoom:50%;" />
 
-<img src="image\image-20240425145843248.png" alt="image-20240425145843248" style="zoom: 50%;" />
+<img src="image/image-20240425145843248.png" alt="image-20240425145843248" style="zoom: 50%;" />
 
 **从GitHub克隆最新源代码**
 
@@ -115,7 +115,7 @@ cd labelImg
 
 ​		HOG主要捕获**轮廓信息**。求取前先灰度化然后Gamma校正，降低图像局部的阴影和光照变化所造成的影响，同时可以抑制噪音的干扰。
 
-<img src="image\image-20240419095037949.png" alt="image-20240419095037949" style="zoom: 67%;" />
+<img src="image/image-20240419095037949.png" alt="image-20240419095037949" style="zoom: 67%;" />
 
 **图像归一化**
 
@@ -131,7 +131,7 @@ cd labelImg
 
 ​		将灰度图像像素点划分成一个或多个**窗口（win）**，一个窗口再分为多个**块（block）**，一个块再分为多个**细胞单元（cell）**。将梯度方向按一定角度分开，通常在0-180度（无向）或0-360度（有向）范围内。例如采用无向的梯度和9个直方图通道，则方向的范围划分为180/9=20度，方向即划分为9个**箱（bin）**。
 
-<img src="image\image-20240419095442329.png" alt="image-20240419095442329" style="zoom: 33%;" />
+<img src="image/image-20240419095442329.png" alt="image-20240419095442329" style="zoom: 33%;" />
 
 z1 ~ z9的9个bin的值代表该梯度方向上累加的梯度幅值，对每个cell区域内的所有像素按其梯度方向循环累加，得到该cell区域的梯度向量值。
 
@@ -145,7 +145,7 @@ z1 ~ z9的9个bin的值代表该梯度方向上累加的梯度幅值，对每个
 
 
 
-<img src="image\image-20240419095738507.png" alt="image-20240419095738507" style="zoom:33%;" />
+<img src="image/image-20240419095738507.png" alt="image-20240419095738507" style="zoom:33%;" />
 
 ### SIFT
 
@@ -159,11 +159,11 @@ z1 ~ z9的9个bin的值代表该梯度方向上累加的梯度幅值，对每个
 
 ​		一幅DoG图像，让目标点跟它周围的8邻域的8个点比较，并且跟它相邻尺度的DoG图像做三维的空间比较，因此一个目标点总共会同周边26个点比较，如下图。如果目标点经过如此比较后，确实是这26个点中的极大或极小值，就认为该点是图像在该尺寸下的极值点。
 
-<img src="image\image-20240419103433850.png" alt="image-20240419103433850" style="zoom: 33%;" />
+<img src="image/image-20240419103433850.png" alt="image-20240419103433850" style="zoom: 33%;" />
 
 ​		按照上述比较法，找到多尺度DoG空间的所有极值点。但这些极值点都是离散的，在离散的空间中，局部极值点可能并不是真正意义上的极值点。因此，采用插值法进一步求得真正的极值点。如下图所示，利用已知的离散空间点插值得到连续空间极值点，通过对尺度空间DoG函数进行曲线拟合，进一步对函数方程求偏导，得到精确的极值点。
 
-<img src="image\image-20240419103524637.png" alt="image-20240419103524637" style="zoom:33%;" />
+<img src="image/image-20240419103524637.png" alt="image-20240419103524637" style="zoom:33%;" />
 
 此外，还需要删除边缘效应的点。DoG的值会受到边缘的影响。
 
@@ -175,7 +175,7 @@ z1 ~ z9的9个bin的值代表该梯度方向上累加的梯度幅值，对每个
 
 ​		采集特征点所在高斯金字塔图像3σ邻域窗口内像素的梯度和方向分布特征。在完成特征点的梯度计算后，使用直方图统计邻域内像素的梯度和方向。子区域中各个像素的梯度都可以分到8个bin（类似HOG算法）里面。梯度直方图将0~360度的方向范围分为36个柱，其中每柱10度。如图所示，直方图的峰值则代表了该特征点处邻域梯度的主方向，即作为该特征点的方向，其他的达到最大值80%的方向可作为辅助方向。
 
-<img src="image\image-20240419103745679.png" alt="image-20240419103745679" style="zoom:33%;" />
+<img src="image/image-20240419103745679.png" alt="image-20240419103745679" style="zoom:33%;" />
 
 **选取特征点的方向**
 
@@ -183,7 +183,7 @@ z1 ~ z9的9个bin的值代表该梯度方向上累加的梯度幅值，对每个
 
 ​		每一个小格都代表了特征点邻域所在的尺度空间的一个像素 ，箭头方向代表了像素梯度方向，箭头长度代表该像素的幅值。然后在4×4的窗口内计算8个方向的梯度方向直方图。绘制每个梯度方向的累加可形成一个种子点。这样就可以对每个特征点形成一个4*4*8=128维的描述子。
 
-<img src="image\image-20240419103919375.png" alt="image-20240419103919375" style="zoom: 50%;" />
+<img src="image/image-20240419103919375.png" alt="image-20240419103919375" style="zoom: 50%;" />
 
 HOG和SIFT两者特点对比如下：
 
@@ -217,9 +217,9 @@ cifiar10
 3. 检测-Detection
 4. 分割-Segmentation
 
-<img src="image\image-20240418105437563.png" alt="image-20240418105437563" style="zoom: 33%;" />
+<img src="image/image-20240418105437563.png" alt="image-20240418105437563" style="zoom: 33%;" />
 
-<img src="image\image-20240418173843308.png" alt="image-20240418173843308" style="zoom:33%;" />
+<img src="image/image-20240418173843308.png" alt="image-20240418173843308" style="zoom:33%;" />
 
 类或函数使用
 
@@ -305,7 +305,7 @@ print('Shape of the array:', np_img.shape)
 
 数据集
 
-![image-20231112211203850](image\image-20231112211203850.png)
+![image-20231112211203850](image/image-20231112211203850.png)
 
 ## 卷积神经网络基础
 
@@ -314,7 +314,7 @@ print('Shape of the array:', np_img.shape)
 **MLP神经网络的结构和原理**
  最典型的MLP包括包括三层：输入层、隐层和输出层，MLP神经网络不同层之间是**全连接**的（全连接的意思就是：上一层的任何一个神经元与下一层的所有神经元都有连接）。
 
-![image-20240401162718242](image\image-20240401162718242.png)
+![image-20240401162718242](image/image-20240401162718242.png)
 
 由此可知，神经网络主要有三个基本要素：**权重、偏置和激活函数**
 
@@ -335,9 +335,9 @@ DNN存在的局限：
 
 ​		主要针对DNN存在的参数数量膨胀问题，对于CNN，并不是所有的上下层神经元都能直接相连，而是通过“卷积核”作为中介（部分连接）。同一个卷积核在多有图像内是共享的，图像通过卷积操作仍能保留原先的位置关系。CNN之所以适合图像识别，正式因为CNN模型限制参数个数并挖掘局部结构的这个特点。
 
-<img src="image\image-20231115210655735.png" alt="image-20231115210655735" style="zoom: 50%;" />
+<img src="image/image-20231115210655735.png" alt="image-20231115210655735" style="zoom: 50%;" />
 
-<img src="image\image-20240418211816990.png" alt="image-20240418211816990" style="zoom: 50%;" />
+<img src="image/image-20240418211816990.png" alt="image-20240418211816990" style="zoom: 50%;" />
 
 #### RNN(循环神经网络)
 
@@ -351,7 +351,7 @@ DNN存在的局限：
 
 BP——反向传播算法Back Propagation(不属于卷积神经网络)
 
-![image-20240418212337927](image\image-20240418212337927.png)
+![image-20240418212337927](image/image-20240418212337927.png)
 
 
 
@@ -361,7 +361,7 @@ BP——反向传播算法Back Propagation(不属于卷积神经网络)
 
 - pytorch 中 tensor（也就是输入输出层）的 通道排序为：`[batch, channel, height, width]`
 
-![image-20240317151901283](image\image-20240317151901283.png)
+![image-20240317151901283](image/image-20240317151901283.png)
 
 - model.py ——定义LeNet网络模型
 - train.py ——加载数据集并训练，训练集计算loss，测试集计算accuracy，保存训练好的网络参数
@@ -377,11 +377,11 @@ BP——反向传播算法Back Propagation(不属于卷积神经网络)
 
 图像经过卷积之后的样子：
 
-<img src="image\image-20240418212144837.png" alt="image-20240418212144837" style="zoom: 50%;" />
+<img src="image/image-20240418212144837.png" alt="image-20240418212144837" style="zoom: 50%;" />
 
 经卷积后的输出层尺寸计算公式为：
 
-<img src="image\image-20231115202646479.png" alt="image-20231115202646479" style="zoom:80%;" />
+<img src="image/image-20231115202646479.png" alt="image-20231115202646479" style="zoom:80%;" />
 
 - 输入图片大小 W×W（一般情况下Width=Height）
 
@@ -399,9 +399,9 @@ BP——反向传播算法Back Propagation(不属于卷积神经网络)
 
 ​		**池化层主要用于减小特征图的尺寸，并且保留重要的特征信息。**它通过对输入数据的局部区域进行汇聚操作，例如最大池化或平均池化，从而减少特征图的大小。池化操作可以降低模型对输入数据的敏感性，并且减少模型的参数数量，从而降低计算复杂度。
 
-<img src="image\image-20231201170532471.png" alt="image-20231201170532471" style="zoom: 33%;" />
+<img src="image/image-20231201170532471.png" alt="image-20231201170532471" style="zoom: 33%;" />
 
-<img src="image\image-20231201170628627.png" alt="image-20231201170628627" style="zoom: 33%;" />
+<img src="image/image-20231201170628627.png" alt="image-20231201170628627" style="zoom: 33%;" />
 
 #### 3.全连接层(Fuly Connected Layer)
 
@@ -463,17 +463,17 @@ cv2.waitKey(0)
 
 ### 误差计算
 
-![image-20231201171030696](image\image-20231201171030696.png)
+![image-20231201171030696](image/image-20231201171030696.png)
 
-![image-20231201172921845](image\image-20231201172921845.png)
+![image-20231201172921845](image/image-20231201172921845.png)
 $$
 将y_1写成y_1=w_{11}^{(2)}a_1+w_{21}^{(2)}a_2+w_{31}^{(2)}a_3+b_{1}^{(2)}便于计算
 $$
-![image-20231201174134901](image\image-20231201174134901.png)
+![image-20231201174134901](image/image-20231201174134901.png)
 
-![image-20231201174559904](image\image-20231201174559904.png)
+![image-20231201174559904](image/image-20231201174559904.png)
 
-![image-20231201174740775](image\image-20231201174740775.png)
+![image-20231201174740775](image/image-20231201174740775.png)
 $$
 新的w_{11}^{(2)}=旧的w_{11}^{(2)}-设置的学习率*w_{11}^{(2)}的损失梯度\ \ \ \ \ \ \ 	\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
 $$
@@ -481,11 +481,11 @@ $$
 
 交叉熵损失
 
-![image-20231201173118136](image\image-20231201173118136.png)
+![image-20231201173118136](image/image-20231201173118136.png)
 
 权重的更新
 
-![image-20231201175849784](image\image-20231201175849784.png)
+![image-20231201175849784](image/image-20231201175849784.png)
 
 ## 激活函数
 
@@ -493,23 +493,23 @@ $$
 
 #### Sigmoid函数：
 
-<img src="image\image-20231115211312376.png" alt="image-20231115211312376" style="zoom:67%;" />
+<img src="image/image-20231115211312376.png" alt="image-20231115211312376" style="zoom:67%;" />
 
 其几何函数如下：
 
-![image-20231115211350429](image\image-20231115211350429.png)
+![image-20231115211350429](image/image-20231115211350429.png)
 
 #### Relu函数：
 
-![image-20231115211444003](image\image-20231115211444003.png)
+![image-20231115211444003](image/image-20231115211444003.png)
 
 其几何函数如下：
 
-![image-20231115211525649](image\image-20231115211525649.png)
+![image-20231115211525649](image/image-20231115211525649.png)
 
 ##### Leaky ReLU函数
 
-![image-20240423172337038](image\image-20240423172337038.png)
+![image-20240423172337038](image/image-20240423172337038.png)
 
 特点：
 
@@ -520,15 +520,15 @@ $$
 
 其几何函数如下：
 
-<img src="image\image-20240423172402767.png" alt="image-20240423172402767" style="zoom:33%;" />
+<img src="image/image-20240423172402767.png" alt="image-20240423172402767" style="zoom:33%;" />
 
 #### tanh函数/双曲正切激活函数：
 
-![image-20231115211554491](image\image-20231115211554491.png)
+![image-20231115211554491](image/image-20231115211554491.png)
 
 其几何函数如下：
 
-![image-20231115211637145](image\image-20231115211637145.png)
+![image-20231115211637145](image/image-20231115211637145.png)
 
 #### ELU函数
 
@@ -548,9 +548,9 @@ $$
 
 #### GELU激活函数：
 
-![image-20240403201909432](image\image-20240403201909432.png)
+![image-20240403201909432](image/image-20240403201909432.png)
 
-![image-20240403201847785](image\image-20240403201847785.png)
+![image-20240403201847785](image/image-20240403201847785.png)
 
 #### SiLU激活函数
 
@@ -564,11 +564,11 @@ $$
 
 ​		使用两块GPU并行运算
 
-![image-20231115213423403](image\image-20231115213423403.png)
+![image-20231115213423403](image/image-20231115213423403.png)
 
-![image-20240115193941077](image\image-20240115193941077.png)
+![image-20240115193941077](image/image-20240115193941077.png)
 
-![image-20231202110056282](image\image-20231202110056282.png)
+![image-20231202110056282](image/image-20231202110056282.png)
 
 **局部响应归一化**
 
@@ -576,15 +576,15 @@ $$
 $$
 b^i_{(x, y)}=\frac{a^i_{(x,y)}}{k+\alpha \sum_{j=max(0,i-n/2)}^{min(N-1, i+n/2)}(a^j_{(x,y)})^2)^\beta }
 $$
-<img src="image\image-20240418155243608.png" alt="image-20240418155243608" style="zoom:50%;" />
+<img src="image/image-20240418155243608.png" alt="image-20240418155243608" style="zoom:50%;" />
 
 **过拟合**
 
-<img src="image\image-20231202110138753.png" alt="image-20231202110138753" style="zoom: 33%;" />
+<img src="image/image-20231202110138753.png" alt="image-20231202110138753" style="zoom: 33%;" />
 
 
 
-<img src="image\image-20231115221545690.png" alt="image-20231115221545690" style="zoom:67%;" />
+<img src="image/image-20231115221545690.png" alt="image-20231115221545690" style="zoom:67%;" />
 
 ##### model.py
 
@@ -809,7 +809,7 @@ plt.show()
 
 ### 2、VggNet
 
-![image-20231202110713634](image\image-20231202110713634.png)
+![image-20231202110713634](image/image-20231202110713634.png)
 
 通过多个小卷积核代替一个大卷积核可以减少训练所需参数
 
@@ -817,13 +817,13 @@ plt.show()
 
 ​	在卷积神经网络中，决定某一层输出结果中一个元素所对应的输入层的区域大小，被称作感受野(receptive field)。输出特征矩阵(feature map)上的一个单元对应输入层上的区域大小。
 
-![image-20231202111502430](image\image-20231202111502430.png)
+![image-20231202111502430](image/image-20231202111502430.png)
 
-![image-20231202111941938](image\image-20231202111941938.png)
+![image-20231202111941938](image/image-20231202111941938.png)
 
 ##### model.py
 
-<img src="image\image-20240317160657322.png" alt="image-20240317160657322" style="zoom:50%;" />
+<img src="image/image-20240317160657322.png" alt="image-20240317160657322" style="zoom:50%;" />
 
 VGG网络有 VGG-13、VGG-16等多种网络结构，能不能将这几种结构统一成一个模型呢？
 
@@ -866,7 +866,7 @@ def vgg(model_name="vgg16", **kwargs):  # 双星号(**)将参数以字典的形�
 
 ### 3、GoogleNet
 
-![image-20231202112028915](image\image-20231202112028915.png)
+![image-20231202112028915](image/image-20231202112028915.png)
 
 ##### inception结构
 
@@ -874,15 +874,15 @@ GoogLeNet 提出了一种并联结构，下图是论文中提出的inception原�
 
 - inception的作用：增加网络深度和宽度的同时减少参数。
 
-![image-20240317161103024](image\image-20240317161103024.png)
+![image-20240317161103024](image/image-20240317161103024.png)
 
 inception + 降维
 
 在 inception 的基础上，还可以加上降维功能的结构，如下图所示，在原始 inception 结构的基础上，在分支2，3，4上加入了**卷积核大小为1x1的卷积层**，目的是为了降维（减小深度），减少模型训练参数，减少计算量。
 
-![image-20240317164330734](image\image-20240317164330734.png)
+![image-20240317164330734](image/image-20240317164330734.png)
 
-网络模型：\![googlenet](image\googlenet.png) (crtl+左键查看)
+网络模型：\![googlenet](image/googlenet.png) (crtl+左键查看)
 
 ##### 辅助分类器
 
@@ -895,7 +895,7 @@ GooleNet有三个输出层（其中有两个辅助分类器）
 
 下面是原论文中给出的网络参数列表:
 
-![image-20240317161432444](image\image-20240317161432444.png)
+![image-20240317161432444](image/image-20240317161432444.png)
 
 ##### train.py
 
@@ -913,9 +913,9 @@ loss = loss0 + loss1 * 0.3 + loss2 * 0.3
 
 ### 4、ResNet
 
-<img src="image\image-20240313095230121.png" alt="image-20240313095230121" style="zoom: 50%;" />
+<img src="image/image-20240313095230121.png" alt="image-20240313095230121" style="zoom: 50%;" />
 
-![image-20240317161848317](image\image-20240317161848317.png)
+![image-20240317161848317](image/image-20240317161848317.png)
 
 一般我们会觉得网络越深，特征信息越丰富，模型效果应该越好。但是实验证明，当网络堆叠到一定深度时，会出现两个问题：
 
@@ -929,13 +929,13 @@ loss = loss0 + loss1 * 0.3 + loss2 * 0.3
 
 ​		总结就是，**当网络堆叠到一定深度时，反而会出现深层网络比浅层网络效果差的情况。**对于退化问题，ResNet论文提出了 **residual结构**（**残差结构**）来减轻退化问题。为了解决深层网络中的退化问题，可以人为地让神经网络某些层跳过下一层神经元的连接，隔层相连，弱化每层之间的强联系。这种神经网络被称为 **残差网络** (**ResNets**)。
 
-![image-20240318193107366](image\image-20240318193107366.png)
+![image-20240318193107366](image/image-20240318193107366.png)
 
 ##### residual（残差）结构
 
 ① 提出residual模块
 
-![image-20240318184838519](image\image-20240318184838519.png)
+![image-20240318184838519](image/image-20240318184838519.png)
 
 ​		左边针对与网络层数较少的的网络所使用的的残差结构（34），右边主要针对与网络层数较多的网络所使用的结构（50/101/152）。**主分支与侧分支的输出矩阵特征shape必须相同（高宽通道数相同）。**右边在输入和输出都加上了1X1的卷积层，降维再升维（256→64→256），保证shape相同的情况下**减少参数。**使用的残差结构越多，减少的参数就越多。
 
@@ -945,7 +945,7 @@ loss = loss0 + loss1 * 0.3 + loss2 * 0.3
 
 ​	虚线残差结构：输入输出矩阵shape不同，输入：【56,56,64】输出：【28,28,128】，只有将虚线残差结构的输出输入到实线残差结构，才能保证输入输出矩阵的shape相同。
 
-![image-20240318184654726](image\image-20240318184654726.png)
+![image-20240318184654726](image/image-20240318184654726.png)
 
 ##### Batch Normalization处理
 
@@ -957,9 +957,9 @@ loss = loss0 + loss1 * 0.3 + loss2 * 0.3
 
 2. 在图像预处理的过程通常会对图像进行标准化处理。对于Conv1来说输入就是满足某一分布的特征矩阵，但对Conv2来说输入的feature map就不一定满足某一分布规律（整个训练样本集所对应的feature map的数据要满足分布规律）。BN的目的就是使Feature map满足均值为0，方差为1的分布规律。
 
-   ![image-20240318185146830](image\image-20240318185146830.png)
+   ![image-20240318185146830](image/image-20240318185146830.png)
 
-![image-20240318185401217](image\image-20240318185401217.png)
+![image-20240318185401217](image/image-20240318185401217.png)
 
 γ，β是通过反向传播得到的学习率，初始值分别为1,0，使效果更好，ε防止分母为0。
 
@@ -967,13 +967,13 @@ loss = loss0 + loss1 * 0.3 + loss2 * 0.3
 
 **让feature map满足某一分布规律，理论上是指整个训练样本集所对应feature map的数据要满足分布规律**。也就是说要计算出整个训练集的feature map然后在进行标准化处理，对于一个大型的数据集明显是不可能的，所以论文中说的是Batch Normalization，也就是我们计算一个Batch数据的feature map，然后在进行标准化（batch越大越接近整个数据集的分布，效果越好）
 
-![image-20240318185809712](image\image-20240318185809712.png)
+![image-20240318185809712](image/image-20240318185809712.png)
 
 将特征矩阵按通道生成向量，分别计算均值，方差（正向传播中得到）。根据标准差计算公式计算每个通道的值。 
 
 使用pytorch进行实验：
 
-![image-20240327144608754](image\image-20240327144608754.png)
+![image-20240327144608754](image/image-20240327144608754.png)
 
 3. 使用BN时需要注意的问题：
 
@@ -997,7 +997,7 @@ loss = loss0 + loss1 * 0.3 + loss2 * 0.3
 
    ​		对于浅层卷积层所学习的一些角点信息/纹理信息等通用信息，在其他网络中仍然适用。所以将学习好的网络的浅层网络的一些参数迁移到新的网络当中。这样新的网络就也拥有了识别底层通用特征的能力。这样新的网络就能更快速的学习新的数据集的高维特征。
 
-   ![image-20240318190417593](image\image-20240318190417593.png)
+   ![image-20240318190417593](image/image-20240318190417593.png)
 
 3. 常见的迁移学习方式
 
@@ -1015,9 +1015,9 @@ loss = loss0 + loss1 * 0.3 + loss2 * 0.3
 
 ​	ResNet网络的小幅提升，下图对比了卷积和组卷积，采用组卷积可以减少计算参数。
 
-![image-20240318191345692](image\image-20240318191345692.png)
+![image-20240318191345692](image/image-20240318191345692.png)
 
-![image-20240318191756589](image\image-20240318191756589.png)
+![image-20240318191756589](image/image-20240318191756589.png)
 
 ### 5、MobileNet
 
@@ -1030,7 +1030,7 @@ loss = loss0 + loss1 * 0.3 + loss2 * 0.3
 1. Depthwise Convolution(简称DW卷积，减少参数和运算量)
 2. 增加超参数α(控制卷积层、核数量)、β(控制输入图像尺寸)，这两个超参数是人为设定的
 
-![image-20240318203316977](image\image-20240318203316977.png)
+![image-20240318203316977](image/image-20240318203316977.png)
 
 ##### Depthwise Separable(DW)卷积
 
@@ -1038,9 +1038,9 @@ loss = loss0 + loss1 * 0.3 + loss2 * 0.3
 
 传统卷积和DW卷积和PW卷积的区别：
 
-![image-20240318203405331](image\image-20240318203405331.png)
+![image-20240318203405331](image/image-20240318203405331.png)
 
-![image-20240318203623965](image\image-20240318203623965.png)
+![image-20240318203623965](image/image-20240318203623965.png)
 
 使用DW卷积后输出特征矩阵的channel是与输入特征矩阵的channel相等的，如果想改变/自定义输出特征矩阵的channel，那只需要在DW卷积后接上一个PW卷积即可。PW卷积就是普通的卷积而已（只不过卷积核大小为1）
 
@@ -1051,7 +1051,7 @@ MobileNet v1网络
 1. α代表的是卷积核个数的倍率因子，控制卷积核个数。比如table6第一行当α取1.0时，准确率为70.6%
 2. β代表的是分辨率的倍率因子，输入不同尺寸的图像会有不同的准确率。比如table7第一行输入图像为224×224，准确率为70.6%
 
-![image-20240318204244552](image\image-20240318204244552.png)
+![image-20240318204244552](image/image-20240318204244552.png)
 
 MobileNet v1网络存在的问题：depthwise部分的卷积核容易废掉，即卷积核参数大部分为0
 
@@ -1066,21 +1066,21 @@ MobileNet v1网络存在的问题：depthwise部分的卷积核容易废掉，�
 
 ​		残差结构就是两头大，中间小。先用1×1卷积降维，然后使用3×3卷积，再使用1×1卷积升维；(使用Relu激活函数)
 
-​		倒残差结构就是两头小，中间大。先用1×1卷积升维，再使用3×3DW卷积，最后使用1×1降维；(使用Relu6激活函数)![image-20240318204716435](image\image-20240318204716435.png)
+​		倒残差结构就是两头小，中间大。先用1×1卷积升维，再使用3×3DW卷积，最后使用1×1降维；(使用Relu6激活函数)![image-20240318204716435](image/image-20240318204716435.png)
 
-![image-20240318204957458](image\image-20240318204957458.png)
+![image-20240318204957458](image/image-20240318204957458.png)
 
 ​		针对倒残差结构中最后1×1卷积层，使用了线性激活函数，而不是relu激活函数。因为relu激活函数对于低纬度特征信息会造成大量损失。Figure1给出了example，Input经过random matrix T、RuLU、T的逆矩阵，在低纬度的情况下还原的很差。而倒残差结构是“两头小，中间大”，所以在输出的时候就是高维到低维度的情况，所以不建议使用ReLU激活函数，这里使用了线性激活函数来替代。
 
-![image-20240318205348041](image\image-20240318205348041.png)
+![image-20240318205348041](image/image-20240318205348041.png)
 
 何时有shortcut（捷径）
 
-![image-20240318205553184](image\image-20240318205553184.png)
+![image-20240318205553184](image/image-20240318205553184.png)
 
 MobileNet v2网络框架
 
-![image-20240318205724106](image\image-20240318205724106.png)
+![image-20240318205724106](image/image-20240318205724106.png)
 
 1. s代表的是步距，有的bottleneck需要重复两次，两次中只有第一次s是为2的，这个根据Input的特征图大小也能判断出来
 2. t代表是扩展因子。这个在上图中的表格也可以看到
@@ -1092,7 +1092,7 @@ MobileNet V3网络详解
 2. 使用NAS搜索参数(Neural Architecture Search)，不细说
 3. 重新设计耗时层结构
 
-block具体更新的点![image-20240318210732637](image\image-20240318210732637.png)
+block具体更新的点![image-20240318210732637](image/image-20240318210732637.png)
 
 上图中下半部分中的Mobilenet V3 block中的NL就代表了非线性激活函数。但不同层使用的是不同的激活函数
 
@@ -1102,20 +1102,20 @@ SE模块详解
 
 ​		如何复原成原来的特征图大小。下图解释是，得到了0.5、0.6，然后用原来的特征图和这个数据相乘，也就是把0.5、0.6当成了channel对应的权重（这里可以理解为对特征矩阵每一个channel分析出一个权重关系，比较重要的channel就赋予一个比较大的权重，不是很重要的channel就赋予一个比较小的权重）。
 
-![image-20240318210944838](image\image-20240318210944838.png)
+![image-20240318210944838](image/image-20240318210944838.png)
 
 重新设计耗时层结构
 
 1. 减少第一个卷积层的卷积核个数
-2. 精简last stage![image-20240318211414832](image\image-20240318211414832.png)
+2. 精简last stage![image-20240318211414832](image/image-20240318211414832.png)
 
 重新设计激活函数
 
-![image-20240318211619207](image\image-20240318211619207.png)
+![image-20240318211619207](image/image-20240318211619207.png)
 
 MobileNet v3网络结构
 
-![image-20240318211939938](image\image-20240318211939938.png)
+![image-20240318211939938](image/image-20240318211939938.png)
 
 exp_size——代表升维的维度
 
@@ -1129,35 +1129,35 @@ SE——√ 代表使用注意力机制
 
 ShuffleNet Unit中全是GConv和DWConv
 
-![image-20240328205146086](image\image-20240328205146086.png)
+![image-20240328205146086](image/image-20240328205146086.png)
 
 在ResNet中，1×1卷积占用了绝大多数计算量，在此换成了Group卷积
 
-![image-20240328205434185](image\image-20240328205434185.png)
+![image-20240328205434185](image/image-20240328205434185.png)
 
 中间对应stride=1，右边对应stride=2
 
-![image-20240328205704079](image\image-20240328205704079.png)
+![image-20240328205704079](image/image-20240328205704079.png)
 
 左下是一个残差结构；g=3时最典型
 
 #### ShuffleNetv2
 
-![image-20240328210454898](image\image-20240328210454898.png)
+![image-20240328210454898](image/image-20240328210454898.png)
 
 影响计算速度的几个因素
 
-![image-20240328212137246](image\image-20240328212137246.png)
+![image-20240328212137246](image/image-20240328212137246.png)
 
 G4包括开启卷积操作，相加操作，偏置，激活函数等（对每一个元素进行操作）
 
 v2结合上面四条准则对v1的block进行优化
 
-![image-20240328212602954](image\image-20240328212602954.png)
+![image-20240328212602954](image/image-20240328212602954.png)
 
 channel Spilit是按照一半一半进行划分的，DW卷积输入输出channel不变
 
-![image-20240328212858423](image\image-20240328212858423.png)
+![image-20240328212858423](image/image-20240328212858423.png)
 
 v2和v1的网络框架相似，就多了1×1的卷积
 
@@ -1169,17 +1169,17 @@ v2和v1的网络框架相似，就多了1×1的卷积
 
 这篇论文主要是用NAS（Neural Architecture Search）技术来搜索网络的图像输入分辨率r，网络的深度depth以及channel的宽度width三个参数的合理化配置。
 
-![image-20240328213836760](image\image-20240328213836760.png)
+![image-20240328213836760](image/image-20240328213836760.png)
 
-![image-20240328214016447](image\image-20240328214016447.png)
+![image-20240328214016447](image/image-20240328214016447.png)
 
 EfficientNet-B0：整个网络框架由一系列Stage组成，F_i表示对应Stage的运算操作，L_i表示在该Stage中重复F_i 的次数：
 
-![image-20240326195807362](image\image-20240326195807362.png)
+![image-20240326195807362](image/image-20240326195807362.png)
 
 接着作者又提出了一个混合缩放方法 ( compound scaling method) 在这个方法中使用了一个混合因子ϕ \phiϕ去统一的缩放width，depth，resolution参数:
 
-![image-20240401103226918](image\image-20240401103226918.png)
+![image-20240401103226918](image/image-20240401103226918.png)
 
 FLOPs(理论计算量)与depth的关系是:当depth翻倍，FLOPs也翻倍。
 
@@ -1194,15 +1194,15 @@ FLOPs与resolution的关系是:当resolution翻倍，FLOPs也会翻4倍，和上
 
 `MBConv`其实就是MobileNetV3网络中的InvertedResidualBlock，但也有些许区别。一个是采用的激活函数不一样（EfficientNet的MBConv中使用的都是Swish激活函数），另一个是在每个MBConv中都加入了SE（Squeeze-and-Excitation）模块。
 
-![image-20240329094502113](image\image-20240329094502113.png)
+![image-20240329094502113](image/image-20240329094502113.png)
 
 BN、Swish为激活函数
 
 ##### SE模块
 
-![image-20240329094752022](image\image-20240329094752022.png)
+![image-20240329094752022](image/image-20240329094752022.png)
 
-![image-20240329094919710](image\image-20240329094919710.png)
+![image-20240329094919710](image/image-20240329094919710.png)
 
 `drop_connect_rate:`	是在MBConv结构中dropout层使用的drop_rate，在官方keras模块的实现中MBConV结构的 drop_rate定从0递增到drop_connect_rate的(具体实现可以看下官方源码，注意，在源码实现中只有使用shortcut的的候才有Dropout层)。还需要注意的是，这里的Dropout层是Stochastic Depth，即会随机丢掉整个block的主分支(只剩捷径分支，相当于直接跳过了这个block)也可以理解为减少了网络的深度。具体可参考Deep Networks with Stochastic Depth这篇文章。
 `dropout_rate:`	是最后一个全连接层前的dropout层(在stage9的Pooling与FC之间)的dropout_rate。
@@ -1215,7 +1215,7 @@ EfficientNet v1中存在的问题：
 
 2、在网络浅层中使用Depthwise convolutions速度会很慢。
 
-![image-20240401114216958](image\image-20240401114216958.png)
+![image-20240401114216958](image/image-20240401114216958.png)
 
 3、同等的放大每个stage是次优的。
 
@@ -1245,27 +1245,27 @@ NAS 搜索
 - 第一个不同点在于EfficientNetV2中除了使用到NBConv模块外，还使用了Fused -NBConv模块（主要是在网络浅层中使用)。
 - 第二个不同点是EfficientNetV2会使用较小的expansion ratio (MBConv中第一个expand convl×1或者Fused -MBConv中第一个expand conv3×3）比如4，在EfficientNetV1中基本都是6 。这样的好处是能够减少内存访问开销。
 - 第三个不同点是EficientNetV2中更偏向使用更小(3×3 )的kernel_size，在EfficientNetV1中使用了很多5x5的kernel_size。通过下表可以看到使用的kernel_size全是3x3的，由于3×3的感受野是要比5×5小的，所以需要堆叠更多的层结构以增加感受野。
-- 最后一个不同点是移除了EfficientNetV1中最后一个步距为1的stage(就是EficientNetV/1中的stage8，可能是因为它的参数数量过多并且内存访问开销过大（由于网络是通过NAS搜索出来的，所有这里也是作者的猜测)。![image-20240401111144454](image\image-20240401111144454.png)
+- 最后一个不同点是移除了EfficientNetV1中最后一个步距为1的stage(就是EficientNetV/1中的stage8，可能是因为它的参数数量过多并且内存访问开销过大（由于网络是通过NAS搜索出来的，所有这里也是作者的猜测)。![image-20240401111144454](image/image-20240401111144454.png)
 
 `Fused-MBConv`  模块上面再讲EfficientNet V1存在问题章节有讲到过，模块名称后跟的1，4表示expansion ratio，k3×3表示kenel size为 3×3。下图为结构图SE结构的（原论文图中有SE)。注意当stride=1且输入输出Channels相等时才有shortcut连接。还需要注意的是，当有shortcut连接时才有Dropout层，而且这里的Dropout层是Stochastic Depth，即会随机丢掉整个block的主分支（只剩捷径分支，相当于直接跳过了这个block)也可以理解为减少了网络的深度。具体可参考Deep Networks with Stochastic Depth这篇文章。
 
-![image-20240401111437991](image\image-20240401111437991.png)
+![image-20240401111437991](image/image-20240401111437991.png)
 
 `MBConv` 模块和EficientNet V1中是一样的，其中模块名称后跟的4，6表示expansion ratio，SE0.25表示使用了SE模块，0.25表示SE模块中第一个全连接层的节点个数是输入该NBConv模块特征矩阵channels的¼。注意当stride=1且输入输出Channels相等时才有shortcut连接。同样这里的Dropout层是Stochastic Depth 。
 
-![image-20240401111948253](image\image-20240401111948253.png)
+![image-20240401111948253](image/image-20240401111948253.png)
 
 注意每个Stage中会重复堆叠Operator模块多次，只有第一个Opertator模块的步距是按照表格中Stride来设置的，其他的默认都是1。 #Channels表示该Stage输出的特征矩阵的Channels，#Layers表示该Stage重复堆叠Operator的次数。
 
 ##### Stochastic Depth 
 
-![image-20240401115104224](image\image-20240401115104224.png)
+![image-20240401115104224](image/image-20240401115104224.png)
 
 ##### Progressive Learning 渐进学习策略
 
-![image-20240401115854484](image\image-20240401115854484.png)
+![image-20240401115854484](image/image-20240401115854484.png)
 
-![image-20240401115910902](image\image-20240401115910902.png)
+![image-20240401115910902](image/image-20240401115910902.png)
 
 GRU  LSTM
 
@@ -1275,13 +1275,13 @@ GRU  LSTM
 
 ​		Transformer是2017年Google在Computation and Language上发表的，当时主要是针对自然语言处理领域提出的（之前的RNN模型记忆长度有限且无法并行化，只有计算完t_i 时刻后的数据才能计算$t_{(i+1)}$时刻的数据，但Transformer都可以做到）。在这篇文章中作者提出了Self-Attention的概念，然后在此基础上提出Multi-Head Attention。
 
-![image-20240401182125090](image\image-20240401182125090.png)
+![image-20240401182125090](image/image-20240401182125090.png)
 
 #### Self-Attention
 
 ​		假设输入的序列长度为2，输入就两个节点$x_1 ,x_2$，然后通过Input Embedding也就是图中的 $f(x)$ 将输入映射到$a_1 , a_2$。紧接着分别将$a_1 , a_2$分别通过三个变换矩阵$W_q,W_k,W_v$，(这三个参数是可训练的，是共享的)得到对应的$q^i ,k^i , v^i$ (这里在源码中是直接使用全连接层实现的，这里为了方便理解，忽略偏执)。
 
-![image-20240401172415329](image\image-20240401172415329.png)
+![image-20240401172415329](image/image-20240401172415329.png)
 
 其中
 
@@ -1305,15 +1305,15 @@ $$
 
 ​		接着先拿$q^1$和每个$k$进行match，点乘操作，接着除以$√d$得到对应的$α$，其中**d**代表向量  $ k^i$的长度，在本示例中等于2，除以$√d$的原因在论文中的解释是“进行点乘后的数值很大，导致通过softmax后梯度变的很小”，所以通过除以$√d$来进行缩放。
 
-![image-20240401173106059](image\image-20240401173106059.png)
+![image-20240401173106059](image/image-20240401173106059.png)
 
 ​		接着对每一行即($a_{(1,1)}$ , $a_{(1,2)}$ )和$(a_{(2,1)}$ , $a_{(2,2)}$ )分别进行softmax处理，然后分别乘以V对应的权重
 
-![image-20240401173300152](image\image-20240401173300152.png)
+![image-20240401173300152](image/image-20240401173300152.png)
 
 总结下来就是论文中的一个公式：
 
-![image-20240401172521527](image\image-20240401172521527.png)
+![image-20240401172521527](image/image-20240401172521527.png)
 
 #### Multi-Head Attention
 
@@ -1321,27 +1321,27 @@ $$
 
 ​		首先还是和Self-Attention模块一样将$a_i$分别通过$W_q,W_k,W_v$得到对应的$q^i ,k^i , v^i$，然后再根据使用的head的数目h进一步把得到的$q^i ,k^i , v^i$均分成h份。比如下图中假设h=2然后$q^1$拆分成$q^{1,1}$和$q^{1,2}$，那么$q^{1,1}$就属于head1，$q^{1,2}$属于head2。
 
-<img src="image\image-20240401173503321.png" alt="image-20240401173503321" style="zoom: 67%;" />
+<img src="image/image-20240401173503321.png" alt="image-20240401173503321" style="zoom: 67%;" />
 
 一些代码就是简单的进行均分
 
-<img src="image\image-20240401174813936.png" alt="image-20240401174813936" style="zoom:67%;" />
+<img src="image/image-20240401174813936.png" alt="image-20240401174813936" style="zoom:67%;" />
 
 得到的公式为
 
-![image-20240401175206453](image\image-20240401175206453.png)
+![image-20240401175206453](image/image-20240401175206453.png)
 
-![image-20240401175308441](image\image-20240401175308441.png)
+![image-20240401175308441](image/image-20240401175308441.png)
 
 ​	接着将每个head得到的结果进行concat拼接，比如下图中$b_{1,1}$ ($head_1$得到的$b_1$)和$b_{1,2}$ ($head_2$得到的$b_1$）拼接在一起， $b_{2,1}$ ($head_1$得到的$b_2$)和$b_{2,2}$ ($head_2$得到的$b_2$）
 
-![image-20240401175537874](image\image-20240401175537874.png)
+![image-20240401175537874](image/image-20240401175537874.png)
 
 接着将拼接后的结果通过$W^O$（可学习的参数）进行融合，如下图所示，融合后得到最终的结果$b_1, b_2$
 
-![image-20240401175719333](image\image-20240401175719333.png)总结下来就是论文中的两个公式：
+![image-20240401175719333](image/image-20240401175719333.png)总结下来就是论文中的两个公式：
 
-![image-20240401175741984](image\image-20240401175741984.png)
+![image-20240401175741984](image/image-20240401175741984.png)
 
 转换成矩阵相乘的形式表达
 
@@ -1361,7 +1361,7 @@ Self-Attention与Multi-Head Attention计算量对比:
 
 ​	如下图所示，位置编码是直接加在输入的$a ={\{a_1,...,a_n}\}$中的，即$pe ={\{pe_1,...,pe_n}\}$和$a ={\{a_1,...,a_n}\}$拥有相同的维度大小。关于位置编码在原论文中有提出两种方案，一种是原论文中使用的固定编码，即论文中给出的`sine and cosine functions`方法，按照该方法可计算出位置编码；另一种是可训练的位置编码，作者说尝试了两种方法发现结果差不多（但在ViT论文中使用的是可训练的位置编码）。
 
-<img src="image\image-20240401180436274.png" alt="image-20240401180436274" style="zoom: 50%;" />
+<img src="image/image-20240401180436274.png" alt="image-20240401180436274" style="zoom: 50%;" />
 
 ![image-20240522205724449](D:/tool/typora/image/image-20240522205724449.png)
 
@@ -1388,7 +1388,7 @@ Self-Attention与Multi-Head Attention计算量对比:
 - $d_k , d_y$表示Multi-Head Self-Attention中每个head的key (K)以及query (Q)的维度。
 - $P_{drop}$表示dropout层的drop_rate
 
-![image-20240401181016820](image\image-20240401181016820.png)
+![image-20240401181016820](image/image-20240401181016820.png)
 
 ### 8、Version Transformer
 
@@ -1405,13 +1405,13 @@ Self-Attention与Multi-Head Attention计算量对比:
 
 输入的图像大小是固定的
 
-![image-20240401210233610](image\image-20240401210233610.png)
+![image-20240401210233610](image/image-20240401210233610.png)
 
 #####  Embedding层
 
 ​		对于图像数据而言，其数据格式为[H, W, C]是三维矩阵明显不是Transformer想要的。所以需要先通过一个Embedding层来对数据做个变换。
 
-​		对于标准的Transformer模块，要求输入的是token（向量）序列，即二维矩阵[num_token, token_dim]，如下图，token0-9对应的都是向量，以ViT-B/16为例，将输入图片(224x224)按照16x16大小的Patch进行划分，会得到196个Patches，每个Patche数据shape为[16, 16, 3]通过映射得到一个长度为768的向量（后面都直接称为token）。`[16, 16, 3] -> [768]`![image-20240401210535392](image\image-20240401210535392.png)
+​		对于标准的Transformer模块，要求输入的是token（向量）序列，即二维矩阵[num_token, token_dim]，如下图，token0-9对应的都是向量，以ViT-B/16为例，将输入图片(224x224)按照16x16大小的Patch进行划分，会得到196个Patches，每个Patche数据shape为[16, 16, 3]通过映射得到一个长度为768的向量（后面都直接称为token）。`[16, 16, 3] -> [768]`![image-20240401210535392](image/image-20240401210535392.png)
 
 ​		**在代码实现中，直接通过一个卷积层来实现**。 以ViT-B/16为例，直接使用一个卷积核大小为16x16，步距为16，卷积核个数为768的卷积来实现。通过卷积`[224, 224, 3] -> [14, 14, 768]`，然后把H以及W两个维度展平即可`[14, 14, 768] -> [196, 768]`，此时正好变成了一个二维矩阵。
 
@@ -1431,17 +1431,17 @@ Self-Attention与Multi-Head Attention计算量对比:
 
 - MLP Block，如图右侧所示，就是全连接+GELU激活函数+Dropout组成也非常简单，需要注意的是第一个全连接层会把输入节点个数翻4倍`[197, 768] -> [197, 3072]`，第二个全连接层会还原回原节点个数`[197, 3072] -> [197, 768]`
 
-  <img src="image\image-20240403154156699.png" alt="image-20240403154156699" style="zoom: 50%;" />
+  <img src="image/image-20240403154156699.png" alt="image-20240403154156699" style="zoom: 50%;" />
 
 ##### MLP Head
 
 ​	上面通过Transformer Encoder后输出的shape和输入的shape是保持不变的，以ViT-B/16为例，输入的是`[197, 768]`输出的还是`[197, 768]`。注意，在Transformer Encoder后其实还有一个Layer Norm没有画出来。这里我们只是需要分类的信息，所以我们只需要提取出[class]token生成的对应结果就行，即`[197, 768]`中抽取出[class]token对应的`[1, 768]`。接着我们通过MLP Head得到我们最终的分类结果。MLP Head原论文中说在训练ImageNet21K时是由`Linear`+`tanh激活函数`+`Linear`组成。但是迁移到ImageNet1K上或者你自己的数据上时，只用一个Linear即可。
 
-<img src="image\image-20240403154503293.png" alt="image-20240403154503293" style="zoom: 33%;" />
+<img src="image/image-20240403154503293.png" alt="image-20240403154503293" style="zoom: 33%;" />
 
-[网络结构](image\image-20240403154616981.png)
+[网络结构](image/image-20240403154616981.png)
 
-![image-20240403154616981](image\image-20240403154616981.png)
+![image-20240403154616981](image/image-20240403154616981.png)
 
 不同大小的ViT模型
 
@@ -1449,13 +1449,13 @@ Self-Attention与Multi-Head Attention计算量对比:
 
 ##### *Hybrid模型
 
-![image-20240403154828150](image\image-20240403154828150.png)
+![image-20240403154828150](image/image-20240403154828150.png)
 
 ### 9、Swin Transformer
 
 Swin Transformer和Vision Transformer对比：
 
-![image-20240403185555873](image\image-20240403185555873.png)
+![image-20240403185555873](image/image-20240403185555873.png)
 
 - Swin Transformer使用了类似卷积神经网络中的层次化构建方法（Hierarchical feature maps），比如特征图尺寸中有对图像下采样4倍的，8倍的以及16倍的，这样的backbone有助于在此基础上构建目标检测，实例分割等任务。而在之前的Vision Transformer中是一开始就直接下采样16倍，后面的特征图也是维持这个下采样率不变。
 - 在Swin Transformer中使用了Windows Multi-Head Self-Attention(W-MSA)的概念，比如在下图的4倍下采样和8倍下采样中，将特征图划分成了多个不相交的区域（Window），并且Multi-Head Self-Attention只在每个窗口（Window）内进行。相对于Vision Transformer中直接对整个（Global）特征图进行Multi-Head Self-Attention，这样做的目的是能够减少计算量的，尤其是在浅层特征图很大的时候。
@@ -1464,7 +1464,7 @@ Swin Transformer和Vision Transformer对比：
 
 Swin Transformer网络的架构图
 
-![image-20240403185830960](image\image-20240403185830960.png)
+![image-20240403185830960](image/image-20240403185830960.png)
 
 - 首先将图片输入到Patch Partition模块中进行分块，即每4x4相邻的像素为一个Patch，然后在channel方向展平（flatten）。假设输入的是RGB三通道图片，那么每个patch就有4x4=16个像素，然后每个像素有R、G、B三个值所以展平后是16x3=48，所以通过Patch Partition后图像shape由` [H, W, 3]`变成了` [H/4, W/4, 48]`。然后在通过Linear Embeding层对每个像素的channel数据做线性变换，由48变成C，即图像shape再由 `[H/4, W/4, 48]`变成了` [H/4, W/4, C]`。
 
@@ -1476,28 +1476,28 @@ Swin Transformer网络的架构图
 
 ​		在每个Stage中首先要通过一个Patch Merging层进行下采样（Stage1除外）。如下图所示，假设输入Patch Merging的是一个4x4大小的单通道特征图（feature map），Patch Merging会将每个2x2的相邻像素划分为一个patch，然后将每个patch中相同位置（同一颜色）像素给拼在一起就得到了4个feature map。接着将这四个feature map在深度方向进行concat拼接，然后在通过一个LayerNorm层。最后通过一个全连接层在feature map的深度方向做线性变化，将feature map的深度由C变成C/2。通过这个简单的例子可以看出，通过Patch Merging层后，feature map的高和宽会减半，深度会翻倍。
 
-<img src="image\image-20240403191315869.png" alt="image-20240403191315869" style="zoom:33%;" />
+<img src="image/image-20240403191315869.png" alt="image-20240403191315869" style="zoom:33%;" />
 
 ##### W-MSA
 
 ​	引入Windows Multi-head Self-Attention（W-MSA）模块是为了减少计算量。如下图所示，左侧使用的是普通的Multi-head Self-Attention（MSA）模块，对于feature map中的每个像素（或称作token，patch）在Self-Attention计算过程中需要和所有的像素去计算。但在图右侧，在使用Windows Multi-head Self-Attention（W-MSA）模块时，首先将feature map按照MxM（例子中的M=2）大小划分成一个个Windows，然后单独对每个Windows内部进行Self-Attention。
 
-![image-20240403191443882](image\image-20240403191443882.png)
+![image-20240403191443882](image/image-20240403191443882.png)
 
 ##### SW-MSA
 
 ​		前面采用W-MSA模块时，只会在每个窗口内进行自注意力计算，所以窗口与窗口之间是无法进行信息传递的。为了解决这个问题，作者引入了Shifted Windows Multi-Head Self-Attention（SW-MSA）模块，即进行偏移的W-MSA。如下图所示，左侧使用的是刚刚讲的W-MSA（假设是第L层），那么根据之前介绍的W-MSA和SW-MSA是成对使用的，那么第L+1层使用的就是SW-MSA（右侧图）。根据左右两幅图对比能够发现窗口（Windows）发生了偏移（可以理解成窗口从左上角分别向右侧和下方各偏移了$M/2$个像素。看下偏移后的窗口（右侧图），比如对于第一行第2列的2x4的窗口，它能够使第L层的第一排的两个窗口信息进行交流。再比如，第二行第二列的4x4的窗口，他能够使第L层的四个窗口信息进行交流，其他的同理。
-![image-20240403192024244](image\image-20240403192024244.png)
+![image-20240403192024244](image/image-20240403192024244.png)
 
 ​		根据上图，可以发现通过将窗口进行偏移后，由原来的4个窗口变成9个窗口了。后面又要对每个窗口内部进行MSA，这样做感觉又变麻烦了。为了解决这个麻烦，作者又提出而了`Efficient batch computation for shifted configuration`，一种更加高效的计算方法。
 
-![image-20240403193816719](image\image-20240403193816719.png)
+![image-20240403193816719](image/image-20240403193816719.png)
 
 ​		将AC移到最下方，将AB移到最右侧。这样又和原来一样是4个4x4的窗口了。为了防止不同区域合并到一起进行MSA出现信息乱窜的现象，在实际计算中使用的是`masked MSA`即带蒙板mask的MSA，这样就能够通过设置蒙板来隔绝不同区域的信息了。
 
 ​		关于mask如何使用，可以看下下面这幅图，下图是以上面的区域5和区域3为例。
 
-![image-20240403194310524](image\image-20240403194310524.png)
+![image-20240403194310524](image/image-20240403194310524.png)
 
 ​		对于该窗口内的每一个像素（或称token，patch）在进行MSA计算时，都要先生成对应的query(q)，key(k)，value(v)。假设对于上图的像素0而言，得到$q^0$后要与每一个像素的k进行匹配（match），假设$α_{0,0}$代表$q^0$与像素0对应的$k^0$进行匹配的结果，那么同理可以得到$α_{0,0}$至$α_{0,15}$ 。按照普通的MSA计算，接下来就是SoftMax操作了。但对于这里的`masked MSA`，像素0是属于区域5的，我们只想让它和区域5内的像素进行匹配。那么我们可以将像素0与区域3中的所有像素匹配结果都减去100（例如$α_{0,2}, α_{0,3}, α_{0,6}, α_{0,7}$等等）由于α的值都很小，一般都是零点几的数，将其中一些数减去100后在通过SoftMax得到对应的权重都等于0了。所以对于像素0而言实际上还是只和区域5内的像素进行了MSA。那么对于其他像素也是同理，具体代码是怎么实现的，后面会在代码讲解中进行详解。注意，在计算完后还要把数据给挪回到原来的位置上。
 
@@ -1533,13 +1533,13 @@ Swin Transformer网络的架构图
 
 
 
-##### [模型架构](image\image-20240403200635863.png)
+##### [模型架构](image/image-20240403200635863.png)
 
 `Layer Scale`操作其实就是将输入的特征层乘上一个可训练的参数，该参数就是一个向量，元素个数与特征层channel相同，即对每个channel的数据进行缩放。
 
 
 
-<img src="image\image-20240403200635863.png" alt="image-20240403200635863" style="zoom:50%;" />
+<img src="image/image-20240403200635863.png" alt="image-20240403200635863" style="zoom:50%;" />
 
 
 
@@ -1547,13 +1547,13 @@ Swin Transformer网络的架构图
 
 ​		RepVGG整个模型就是在不断堆叠RepVGG Block
 
-![image-20240403210219450](image\image-20240403210219450.png)
+![image-20240403210219450](image/image-20240403210219450.png)
 
 ##### RepVGG Block
 
 ​		其中图(a)是进行下采样（stride=2）时使用的RepVGG Block结构，图(b)是正常的（stride=1）RepVGG Block结构。通过图(b)可以看到训练时RepVGG Block并行了三个分支：一个卷积核大小为3x3的主分支，一个卷积核大小为1x1的shortcut分支以及一个只连了BN的shortcut分支。
 
-![image-20240403203700451](image\image-20240403203700451.png)
+![image-20240403203700451](image/image-20240403203700451.png)
 
 - 为什么训练时要采用多分支结构?
 
@@ -1567,7 +1567,7 @@ Swin Transformer网络的架构图
 
 ​		将训练好的RepVGG Block转成推理时的模型结构，即`structural re-parameterization technique`过程。结构重参数化主要分为两步，第一步主要是将Conv2d算子和BN算子融合以及将只有BN的分支转换成一个Conv2d算子，第二步将每个分支上的`3x3`卷积层融合成一个卷积层。
 
-![image-20240403211609309](image\image-20240403211609309.png)
+![image-20240403211609309](image/image-20240403211609309.png)
 
 **1、融合Conv2d和BN**
 
@@ -1585,7 +1585,7 @@ Swin Transformer网络的架构图
 
 ​		前三点已经把每个分支融合转换成一个`3x3`的卷积层，接下来将多分支转换成一个单路`3x3`卷积层。合并的过程其实也很简单，直接将这三个卷积层的参数相加即可。
 
-![image-20240403211407056](image\image-20240403211407056.png)
+![image-20240403211407056](image/image-20240403211407056.png)
 
 ### 12、MobileViT
 
@@ -1593,29 +1593,29 @@ Swin Transformer网络的架构图
 
 ​		MobileViT主要由普通卷积，MV2（MobiletNetV2中的`Inverted Residual block`），`MobileViT block`，全局池化以及全连接层共同组成。
 
-![image-20240403204813405](image\image-20240403204813405.png)
+![image-20240403204813405](image/image-20240403204813405.png)
 
 ##### MobileViT block
 
 ​		MobileViT block的大致结构为：首先将特征图通过一个卷积核大小为n×n（代码中是3×3）的卷积层进行局部的特征建模，然后通过一个卷积核大小为1x1的卷积层调整通道数。接着通过`Unfold -> Transformer -> Fold`结构进行全局的特征建模，然后再通过一个卷积核大小为1x1的卷积层将通道数调整回原始大小。接着通过shortcut捷径分支与原始输入特征图进行Concat拼接（沿通道channel方向拼接），最后再通过一个卷积核大小为nxn（代码中是3x3）的卷积层做特征融合得到输出。
 
-![image-20240403205304817](image\image-20240403205304817.png)
+![image-20240403205304817](image/image-20240403205304817.png)
 
 **Unfold -> Transformer -> Fold结构**：
 
 ​		图中的`Patch`大小为`2x2`，即每个`Patch`由4个`Pixel`组成。在进行`Self-Attention`计算的时候，每个`Token`（图中的每个`Pixel`或者说每个小颜色块）只和自己颜色相同的`Token`进行`Attention`，这样就达到了减少计算量的目的。
 
-![image-20240403205728484](image\image-20240403205728484.png)
+![image-20240403205728484](image/image-20240403205728484.png)
 
 `Unfold`就是将相同颜色的`Token`展平在一个序列中，这样就可以直接使用普通的`Self-Attention`并行计算每个序列的`Attention`了。最后在通过`Fold`折叠回原特征图。
 
-![image-20240403205811702](image\image-20240403205811702.png)
+![image-20240403205811702](image/image-20240403205811702.png)
 
 **Patch Size对性能的影响**：
 
 ​		大的`patch_size`能够提升网络推理速度，但是会丢失一些细节信息。通过对比可以发现，在图像分类和目标检测任务中（对语义细节要求不高的场景），配置A和配置B在Acc和mAP上没太大区别，但配置B要更快。但在语义分割任务中（对语义细节要求较高的场景）配置A的效果要更好。
 
-![image-20240403210110302](image\image-20240403210110302.png)
+![image-20240403210110302](image/image-20240403210110302.png)
 
 
 
@@ -1629,7 +1629,7 @@ Swin Transformer网络的架构图
 
 2、pytorch中的卷积、池化、输入输出层中参数的含义与位置如下图：
 
-![image-20231115202407889](image\image-20231115202407889.png)
+![image-20231115202407889](image/image-20231115202407889.png)
 
 ### 1、网络搭建
 
@@ -1639,11 +1639,11 @@ Swin Transformer网络的架构图
 
 ​			2、输出的特征矩阵channel与卷积核个数相同
 
-![image-20231201165328698](image\image-20231201165328698.png)
+![image-20231201165328698](image/image-20231201165328698.png)
 
 ​		经卷积后的输出层尺寸计算公式为：
 
-<img src="image\image-20231115202646479.png" alt="image-20231115202646479" style="zoom:80%;" />
+<img src="image/image-20231115202646479.png" alt="image-20231115202646479" style="zoom:80%;" />
 
 - 输入图片大小 W×W（一般情况下Width=Height）
 - 卷积核(Filter)大小 F×F
@@ -1657,9 +1657,9 @@ PS：如果计算出来的结果不为整数时，卷积过程会直接忽略最
 
 #### （2）池化 MaxPool2d
 
-![image-20231201170532471](image\image-20231201170532471.png)
+![image-20231201170532471](image/image-20231201170532471.png)
 
-![image-20231201170628627](image\image-20231201170628627.png)
+![image-20231201170628627](image/image-20231201170628627.png)
 
 #### （3）Tensor的展平
 
@@ -1721,7 +1721,7 @@ test_image, test_label = test_data_iter.next()
 
 （4）模型训练
 
-![image-20231115203707414](image\image-20231115203707414.png)
+![image-20231115203707414](image/image-20231115203707414.png)
 
 ```python
 net = LeNet()						  				# 定义训练的网络模型
@@ -1820,7 +1820,7 @@ print(classes[int(predict)])
 
 全称 intersection-over-union 重叠度，交并比
 
-<img src="image\image-20240418205006561.png" alt="image-20240418205006561" style="zoom: 25%;" />
+<img src="image/image-20240418205006561.png" alt="image-20240418205006561" style="zoom: 25%;" />
 
 #### 标注软件
 
@@ -1849,13 +1849,13 @@ print(classes[int(predict)])
 
 （2014年）在过去十年里，各种视觉识别任务的进展都大量地**基于SIFT和HOG特征**的应用。SIFT和HOG是块方向的直方图，我们可以将它与灵长类视觉路径中的第一个皮层区域中的复杂的细胞进行粗略地联系起来。
 
-![image-20240418104534061](image\image-20240418104534061.png)
+![image-20240418104534061](image/image-20240418104534061.png)
 
 ​		我们的系统：1）输入一张图片 （2）从图片中提取出大概2000个自下而上的候选区域 （3）使用一个大的卷积神经网络对每一个候选区域进行计算特征，得到特征向量（4）使用具体的分类线性SVMs给每一个候选区域进行分类。（5）使用回归器精细修正候选框位置
 
 ​		我们的目标检测系统由三个模块组成。第一个方案生成与类别无关的区域方案。这些方案定义了可供检测器使用的候选检测集。第二个模块是一个大型卷积神经网络，它从每个区域提取一个固定长度的特征向量。第三个模块是一组特定于类的线性支持向量机。在本节中，我们将介绍每个模块的设计决策，描述它们的测试时间使用，详细说明如何学习它们的参数，并在PASCAL VOC 2010-12和ILSVRC2013上显示检测结果。
 
-<img src="image\image-20240419150007810.png" alt="image-20240419150007810" style="zoom: 33%;" />
+<img src="image/image-20240419150007810.png" alt="image-20240419150007810" style="zoom: 33%;" />
 
 ​		Bbox reg：全称Bounding-box regression，是用来微调窗口。
 
@@ -1865,7 +1865,7 @@ print(classes[int(predict)])
 
 **选择性搜索 ：**组成目标物体通常有四个要素：变化尺度、颜色、结构（材质）、所占面积。选择性搜索会确定物体在图片中的这些特征，然后基于这些特征突出不同区域。
 
-![image-20240418213055450](image\image-20240418213055450.png)
+![image-20240418213055450](image/image-20240418213055450.png)
 
 #### SVM
 
@@ -1873,7 +1873,7 @@ print(classes[int(predict)])
 
 ​		SVM是一种经典的监督学习算法，用于解决二分类和多分类问题。其核心思想是通过在特征空间中找到一个最优的超平面来进行分类，并且间隔最大。
 
-![image-20240418215038987](image\image-20240418215038987.png)
+![image-20240418215038987](image/image-20240418215038987.png)
 
 ​	SVM 最初被设计用于二分类问题。它通过找到最优的决策边界（或超平面），将数据集中的点根据其类别分开。对于非线性可分问题，SVM 使用核技巧（kernel trick）将数据映射到更高维的空间，以便于找到合适的分离超平面。
 
@@ -1893,11 +1893,11 @@ print(classes[int(predict)])
 
 ​		将2000×4096的特征矩阵与20个SVM组成的权值矩阵4096×20相乘，获得2000×20的概率矩阵，每一行代表一个建议框归于每个目标类别的概率。分别对上述2000×20维矩阵中每一列即每一类进行非极大值抑制剔除重叠建议框，得到该列即该类中得分最高的一些建议框。
 
-<img src="image\image-20240419153632197.png" alt="image-20240419153632197" style="zoom:33%;" />
+<img src="image/image-20240419153632197.png" alt="image-20240419153632197" style="zoom:33%;" />
 
 - 使用回归器精细修正候选框位置
 
-![image-20240419154154897](image\image-20240419154154897.png)
+![image-20240419154154897](image/image-20240419154154897.png)
 
 **非极大值抑制（**NMS**）：**
 
@@ -1905,11 +1905,11 @@ print(classes[int(predict)])
 
 寻找得分最高的目标  ======>  计算其他目标与该目标的iou值  ======>  删除所有iou值大于给定阈值的目标
 
-![image-20240418214248048](image\image-20240418214248048.png)
+![image-20240418214248048](image/image-20240418214248048.png)
 
-<img src="image\image-20240419150252815.png" alt="image-20240419150252815" style="zoom: 33%;" />
+<img src="image/image-20240419150252815.png" alt="image-20240419150252815" style="zoom: 33%;" />
 
-<img src="image\image-20240419153111177.png" alt="image-20240419153111177" style="zoom:33%;" />
+<img src="image/image-20240419153111177.png" alt="image-20240419153111177" style="zoom:33%;" />
 
 **问题**：
 
@@ -1942,11 +1942,11 @@ Fast RCNN：将整张图像送入网络，从特征图像上提取相应的候�
 
 将识别矩形框和分类器结合到一个网络之中
 
-![image-20240419192859655](image\image-20240419192859655.png)
+![image-20240419192859655](image/image-20240419192859655.png)
 
 和RCNN所需要的三个模型不同，Fast RCNN只用了一个模型就同时实现了区域的特征提取、分类、边界框生成。
 
-<img src="image\image-20240419111715842.png" alt="image-20240419111715842" style="zoom:67%;" />
+<img src="image/image-20240419111715842.png" alt="image-20240419111715842" style="zoom:67%;" />
 
 训练数据的采样（正样本——需要检测的目标，负样本——背景）
 
@@ -1956,19 +1956,19 @@ Fast RCNN：将整张图像送入网络，从特征图像上提取相应的候�
 
 ​		不限制输入图像的尺寸。将所有大小的图片分成7*7份分别进行最大池化下采样，得到7\*7的特征矩阵。
 
-<img src="image\image-20240419193853439.png" alt="image-20240419193853439" style="zoom: 33%;" />
+<img src="image/image-20240419193853439.png" alt="image-20240419193853439" style="zoom: 33%;" />
 
 **分类器：** 
 
-<img src="image\image-20240419194444567.png" alt="image-20240419194444567" style="zoom: 33%;" />
+<img src="image/image-20240419194444567.png" alt="image-20240419194444567" style="zoom: 33%;" />
 
 **边界框回归器：**
 
 $(d_x,d_y,d_w,d_h)$ 分别为候选边界框的中心x, y坐标，以及宽高。
 
-<img src="image\image-20240419194538865.png" alt="image-20240419194538865" style="zoom:33%;" />
+<img src="image/image-20240419194538865.png" alt="image-20240419194538865" style="zoom:33%;" />
 
-<img src="image\image-20240419195525950.png" alt="image-20240419195525950" style="zoom:33%;" />
+<img src="image/image-20240419195525950.png" alt="image-20240419195525950" style="zoom:33%;" />
 
 **损失： **
 
@@ -1988,7 +1988,7 @@ https://blog.csdn.net/wjinjie/article/details/105962056
 
 ​		RPN旨在以各种比例和纵横比有效预测推荐区域。与使用图像金字塔（图1，a）或卷积金字塔（图1，b）的流行方法相比，我们介绍了新颖的"anchor box"作为多种比例和纵横比的参考。**我们的方案可以看作是回归参考的金字塔（图1，c），它避免了枚举具有多个比例或纵横比的图像或卷积核。当使用单比例尺图像进行训练和测试时，该模型表现良好，从而提高了运行速度。**
 
-![image-20240418145502818](image\image-20240418145502818.png)
+![image-20240418145502818](image/image-20240418145502818.png)
 
 Faster RCNN工作的大致过程：
 
@@ -1996,11 +1996,11 @@ Faster RCNN工作的大致过程：
 2. 在特征映射上应用RPN结构生成候选框，将RPN生成的候选框投影到特征图上获得相应的特征矩阵。
 3. 将每个特征矩阵通过ROI pooling层缩放到7x7大小的特征图，接着将特征图展平通过一系列全连接层得到预测结果。
 
-<img src="image\image-20240418150427972.png" alt="image-20240418150427972" style="zoom: 50%;" />
+<img src="image/image-20240418150427972.png" alt="image-20240418150427972" style="zoom: 50%;" />
 
 网络框架
 
-![image-20240420191447610](image\image-20240420191447610.png)
+![image-20240420191447610](image/image-20240420191447610.png)
 
 **卷积层**
 
@@ -2017,13 +2017,13 @@ Faster RCNN工作的大致过程：
 
 ​		为了生成推荐区域，我们在最后共享的卷积层输出的卷积特征图上滑动一个小型网络。这个小网络将输入卷积特征图的n×n空间窗口作为输入。每个滑动窗口都映射到一个较低维的特征（ZF为256-d，VGG为512-d，后面是ReLU）。此功能被馈入两个同级的全连接层——边界框回归层（reg）和框分类层（cls）。在图3的单个位置（左）显示了此微型网络。请注意，由于微型网络以滑动窗口的方式运行，因此完全连接的层将在所有空间位置上**共享**。自然地，该体系结构由n×n卷积层和两个同级1×1卷积层（分别用于reg和cls）实现。
 
-![image-20240418150856233](image\image-20240418150856233.png)
+![image-20240418150856233](image/image-20240418150856233.png)
 
 **RPN原理**	
 
 ​	在卷积生成的特征图上生成一个滑动窗口(padding=1,stride=1经过每一个特征图上的点)，每滑动一个地方生成一个行向量，有256个元素(此个数跟网络输出的channel有关)。最后得到的map跟特征图大小一样，深度为256.
 
-![image-20240420194421624](image\image-20240420194421624.png)
+![image-20240420194421624](image/image-20240420194421624.png)
 
 **anchor**为当前特征图上的点按照比例尺(卷积中的步距)找到在原图中的位置(记为中心点)，以这个中心点为中心定义一系列不同长宽比的矩形(如上左图所示，实际有9个)。**$k$**为anchor的个数。
 
@@ -2031,13 +2031,13 @@ Faster RCNN工作的大致过程：
 
 **reg layer**是边界框回归参数，根据其调整边框。$4k$表示分别为边界框参数(中心点，宽，高)。
 
-<img src="image\image-20240420200712892.png" alt="image-20240420200712892" style="zoom: 33%;" />
+<img src="image/image-20240420200712892.png" alt="image-20240420200712892" style="zoom: 33%;" />
 
 针对边界框的比例和尺寸大小各给了三种尺寸比例：
 
-![image-20240420201459784](image\image-20240420201459784.png)
+![image-20240420201459784](image/image-20240420201459784.png)
 
-<img src="image\image-20240420201514920.png" alt="image-20240420201514920" style="zoom:25%;" />
+<img src="image/image-20240420201514920.png" alt="image-20240420201514920" style="zoom:25%;" />
 
 - 低的感受野(eg:171)可以预测大的目标(256×256)。
 - anchor不是候选框(proposal)，利用RPN生成的边界框回归参数将anchor调整到所需要的候选框。
@@ -2059,19 +2059,19 @@ ground-truth——人工标注的真正的标注框
 $$
 L\left(\left\{p_{i}\right\},\left\{t_{i}\right\}\right)=\frac{1}{N_{c l s}} \sum_{i} L_{c l s}\left(p_{i}, p_{i}^{*}\right)+\lambda \frac{1}{N_{\text {reg }}} \sum_{i} p_{i}^{*} L_{\text {reg }}\left(t_{i}, t_{i}^{*}\right)
 $$
-![image-20240420204857964](image\image-20240420204857964.png)
+![image-20240420204857964](image/image-20240420204857964.png)
 $$
 \frac{1}{N_{cls} }\approx  \lambda \frac{1}{N_{reg} }
 $$
 多分类的交叉熵损失（只有两类，论文中使用）
 
-<img src="image\image-20240420205430272.png" alt="image-20240420205430272" style="zoom: 50%;" />
+<img src="image/image-20240420205430272.png" alt="image-20240420205430272" style="zoom: 50%;" />
 
 二分类的交叉熵损失(pytorch代码中使用)
 
-<img src="image\image-20240420210015729.png" alt="image-20240420210015729" style="zoom: 50%;" />
+<img src="image/image-20240420210015729.png" alt="image-20240420210015729" style="zoom: 50%;" />
 
-<img src="image\image-20240420210157103.png" alt="image-20240420210157103" style="zoom: 50%;" />
+<img src="image/image-20240420210157103.png" alt="image-20240420210157103" style="zoom: 50%;" />
 
 **Faster RCNN训练**（晕）
 
@@ -2086,7 +2086,7 @@ $$
 
 总结：
 
-![image-20240419145435594](image\image-20240419145435594.png)
+![image-20240419145435594](image/image-20240419145435594.png)
 
 
 
@@ -2220,7 +2220,7 @@ result.png
 
 2016年发表
 
-<img src="image\image-20240423150854887.png" alt="image-20240423150854887" style="zoom:50%;" />
+<img src="image/image-20240423150854887.png" alt="image-20240423150854887" style="zoom:50%;" />
 
 具体实现过程如下：
 
@@ -2234,19 +2234,19 @@ result.png
 
 ​		在实际过程中，YOLOv1把一张图片划分为了7×7个网格，并且每个网格预测2个Box（Box1和Box2），20个类别。所以实际上，S=7，B=2，C=20。那么网络输出的shape也就是：7×7×30。
 
-<img src="image\image-20240423151231303.png" alt="image-20240423151231303" style="zoom: 33%;" />
+<img src="image/image-20240423151231303.png" alt="image-20240423151231303" style="zoom: 33%;" />
 
 最终给出的目标概率为：
 
-![image-20240423152544921](image\image-20240423152544921.png)
+![image-20240423152544921](image/image-20240423152544921.png)
 
 **网络结构**
 
-![image-20240423152634998](image\image-20240423152634998.png)
+![image-20240423152634998](image/image-20240423152634998.png)
 
 **损失函数**
 
-![image-20240423153047201](image\image-20240423153047201.png)
+![image-20240423153047201](image/image-20240423153047201.png)
 
 问题：
 
@@ -2264,7 +2264,7 @@ result.png
 
 在卷积或池化之后，激活函数之前，对每个数据输出进行标准化，实现方式如下图所示：
 
-<img src="image\image-20240423154518669.png" alt="image-20240423154518669" style="zoom:50%;" />
+<img src="image/image-20240423154518669.png" alt="image-20240423154518669" style="zoom:50%;" />
 
 **更高分辨率的分类器**
 
@@ -2274,30 +2274,30 @@ result.png
 
 ​		在YOLOv1中，作者设计了端对端的网路，直接对边界框的位置（x, y, w, h）进行预测。这样做虽然简单，但是由于没有类似R-CNN系列的推荐区域，所以网络在前期训练时非常困难，很难收敛。于是，自YOLOv2开始，引入了 Anchors box 机制。在 Faster R-CNN 算法中，是通过预测 bounding box 与 ground truth 的位置偏移值$t_x, t_y$，间接得到bounding box的位置。其公式如下:
 
-<img src="image\image-20240423160332237.png" alt="image-20240423160332237" style="zoom:33%;" />
+<img src="image/image-20240423160332237.png" alt="image-20240423160332237" style="zoom:33%;" />
 
 ​		这个公式是无约束的，预测的边界框很容易向任何方向偏移。因此，每个位置预测的边界框可以落在图片任何位置，这会导致模型的不稳定性。因此 YOLOv2 在此方法上进行了一点改变：预测边界框中心点相对于**该网格左上角坐标 $(C_x,C_y)$** 的相对偏移量，同时**为了将bounding box的中心点约束在当前网格中**，使用 sigmoid 函数将$t_x, t_y$归一化处理，将值约束在0-1，这使得模型训练更稳定，$\sigma (x)=Sigmoid(x)$。下图为 Anchor box 与 bounding box 转换示意图，其中蓝色的是要预测的bounding box，黑色虚线框是Anchor box。
 
-<img src="image\image-20240423203751477.png" alt="image-20240423203751477" style="zoom:33%;" />
+<img src="image/image-20240423203751477.png" alt="image-20240423203751477" style="zoom:33%;" />
 
 ​		YOLOv2 在最后一个卷积层输出 13×13 的 feature map，意味着一张图片被分成了13×13个网格。每个网格有5个anchor box来预测5个bounding box，每个bounding box预测得到5个值：$t_x, t_y, t_w, t_h和t_0$(类似yolov1中的confidence).引入Anchor Box 机制后，通过间接预测得到的 bounding box 的位置的计算公式为：
 
-<img src="image\image-20240423160828233.png" alt="image-20240423160828233" style="zoom:50%;" />
+<img src="image/image-20240423160828233.png" alt="image-20240423160828233" style="zoom:50%;" />
 
 #### **Fine-Grained Features 细粒度特征**
 
 ​		细粒度特征，可理解为不同层之间的特征融合。YOLOv2通过添加一个**Passthrough Layer**，把高分辨率的浅层特征连接到低分辨率的深层特征（把特征堆积在不同Channel中）而后进行融合和检测，Passthrough层与ResNet网络的shortcut类似。具体操作是：先获取前层的26×26的特征图，将其同最后输出的13×13的特征图进行连接，而后输入检测器进行检测，以此来**提高对小目标的检测能力**。
-<img src="image\image-20240423161729789.png" alt="image-20240423161729789" style="zoom: 33%;" />
+<img src="image/image-20240423161729789.png" alt="image-20240423161729789" style="zoom: 33%;" />
 
 
 
-<img src="image\image-20240423162148574.png" alt="image-20240423162148574" style="zoom:80%;" />
+<img src="image/image-20240423162148574.png" alt="image-20240423162148574" style="zoom:80%;" />
 
 #### **Darknet-19**
 
 ​	19个卷积层。
 
-<img src="image\image-20240423162602227.png" alt="image-20240423162602227" style="zoom: 67%;" />
+<img src="image/image-20240423162602227.png" alt="image-20240423162602227" style="zoom: 67%;" />
 
 ## 3、yolov3
 
@@ -2305,15 +2305,15 @@ result.png
 
 ​		在YOLOv3中，作者不仅提供了darknet-53，还提供了轻量级的tiny-darknet。如果你想检测精度与速度兼具，可以选择darknet-53作为backbone；如果你希望达到更快的检测速度，精度方面可以妥协，那么tiny-darknet是你很好的选择。
 
-yolov3**[网络结构](image\image-20240423211813223.png)**
+yolov3**[网络结构](image/image-20240423211813223.png)**
 
-#### [Darknet-53](image\image-20240423171211085.png)
+#### [Darknet-53](image/image-20240423171211085.png)
 
 53个卷积层，没有最大池化层。
 
-![image-20240423211813223](image\image-20240423211813223.png)
+![image-20240423211813223](image/image-20240423211813223.png)
 
-![image-20240423171211085](image\image-20240423171211085.png)
+![image-20240423171211085](image/image-20240423171211085.png)
 
 ​		特征图一大小是13*13，Predict one预测尺度较大的目标；特征图一大小是26\*26，Predict three预测中等的目标。特征图一大小是52\*52，Predict three预测较小的目标。
 
@@ -2321,7 +2321,7 @@ yolov3**[网络结构](image\image-20240423211813223.png)**
 
 ​		为了能够预测多尺度的目标，YOLOv3 选择了三种不同shape的Anchors，同时每种Anchors具有三种不同的尺度，一共9种不同大小的Anchors。
 
-<img src="image\image-20240423202220449.png" alt="image-20240423202220449" style="zoom: 50%;" />
+<img src="image/image-20240423202220449.png" alt="image-20240423202220449" style="zoom: 50%;" />
 
 ​		借鉴特征金字塔网的思想，YOLOv3设计了3种不同尺度的网络输出Y1、Y2、Y3，目的是预测不同尺度的目标。由于在每一个尺度网格都负责预测3个边界框，且COCO数据集有80个类。所以网络输出的张量应该是：N ×N ×[3∗(4 + 1 + 80)]。由下采样次数不同，得到的N不同，最终Y1、Y2、Y3的shape分别为：[13, 13, 255]、[26, 26, 255]、[52, 52, 255]。N为预测特征图的大小。
 
@@ -2340,13 +2340,13 @@ eg:预测概率$[0.1,0.8,0.9]$，概率之和不为1
 
 ​		对比YOLOv1中的损失函数很容易知道：位置损失部分并没有改变，仍然采用的是sum-square error的损失计算方法。但是置信度损失和类别预测均由原来的sum-square error改为了交叉熵的损失计算方法。对于类别以及置信度的预测，使用交叉熵的效果应该更好。
 
-![image-20240423210230795](image\image-20240423210230795.png)
+![image-20240423210230795](image/image-20240423210230795.png)
 
-<img src="image\image-20240423210305369.png" alt="image-20240423210305369" style="zoom: 33%;" />
+<img src="image/image-20240423210305369.png" alt="image-20240423210305369" style="zoom: 33%;" />
 
-<img src="image\image-20240423210336544.png" alt="image-20240423210336544" style="zoom:33%;" />
+<img src="image/image-20240423210336544.png" alt="image-20240423210336544" style="zoom:33%;" />
 
-<img src="image\image-20240423210348599.png" alt="image-20240423210348599" style="zoom:33%;" />
+<img src="image/image-20240423210348599.png" alt="image-20240423210348599" style="zoom:33%;" />
 
 ## yolov3 spp
 
@@ -2360,7 +2360,7 @@ eg:预测概率$[0.1,0.8,0.9]$，概率之和不为1
 
 目的是为了**实现不同尺度的特征融合**。在经过SPP模块后，张量中channel应变为原来的4倍，B,H,W不变。
 
-<img src="image\image-20240423212459783.png" alt="image-20240423212459783" style="zoom: 50%;" />
+<img src="image/image-20240423212459783.png" alt="image-20240423212459783" style="zoom: 50%;" />
 
 由何凯明大神提出，主要是为了解决两个问题：
 
@@ -2398,13 +2398,13 @@ SPP优点
 
 IoU Loss 可以更好地反映出重合程度；且具有尺度不变性，无论重叠地框是大是小，重叠占比一定 IoU 一样大 。但是当预测框和 GT 框不重叠时，损失为 0。
 
-<img src="image\image-20240423215016674.png" alt="image-20240423215016674" style="zoom:33%;" />
+<img src="image/image-20240423215016674.png" alt="image-20240423215016674" style="zoom:33%;" />
 
 **GIoU**
 
 DIoU要比GIou更加符合目标框回归的机制，**将目标与anchor之间的距离，重叠率以及尺度都考虑进去**，使得目标框回归变得更加稳定
 
-<img src="image\image-20240423215342819.png" alt="image-20240423215342819" style="zoom:33%;" />
+<img src="image/image-20240423215342819.png" alt="image-20240423215342819" style="zoom:33%;" />
 
 ​		上面公式的意思是：先计算两个框的最小闭包区域面积 Ac (同时包含了预测框和真实框的最小框的面积(蓝色))，再计算出IoU，再计算闭包区域中不属于两个框的区域占闭包区域的比重，u为并集的面积，最后用IoU减去这个比重得到GIoU。 在上图中绿色是真实目标边界框，红色是预测目标边界框。
 
@@ -2414,13 +2414,13 @@ DIoU要比GIou更加符合目标框回归的机制，**将目标与anchor之间�
 
 **DIoU**
 
-<img src="image\image-20240424094405544.png" alt="image-20240424094405544" style="zoom:50%;" />
+<img src="image/image-20240424094405544.png" alt="image-20240424094405544" style="zoom:50%;" />
 
 ​		其中$b和b^{gt}$分别代表了预测框和真实框的中心点，且分子代表的是计算两个中心点间的欧式距离(即直线距离)。 c代表的是能够同时包含预测框和真实框的最小闭包区域的对角线距离。
 
 #### **CIoU**
 
-<img src="image\image-20240424094703427.png" alt="image-20240424094703427" style="zoom:33%;" />
+<img src="image/image-20240424094703427.png" alt="image-20240424094703427" style="zoom:33%;" />
 
 α和v为长宽比，计算公式如上图所示：w、h和w(gt)、h(gt)分别代表预测框的高宽和真实框的高宽。 
 
@@ -2430,7 +2430,7 @@ DIoU要比GIou更加符合目标框回归的机制，**将目标与anchor之间�
 
 ​		在YOLOV3 SPP中，使用Focal Loss通过对损失函数计算中二值交叉熵损失添加因子γ来降低易分负样本的损失贡献。
 
-<img src="image\image-20240424101157360.png" alt="image-20240424101157360" style="zoom:50%;" />
+<img src="image/image-20240424101157360.png" alt="image-20240424101157360" style="zoom:50%;" />
 
 ​		y是样本的标签值，而p是模型预测某一个样本为正样本的概率，对于真实标签为正样本的样本，它的概率p越大说明模型预测的越准确，对于真实标签为负样本的样本，它的概率p越小说明模型预测的越准确。
 
@@ -2441,7 +2441,7 @@ DIoU要比GIou更加符合目标框回归的机制，**将目标与anchor之间�
 [网络结构](D:/tool/typora/image/image-20240506153727889.png)：
 
 - **Backbone:** [CSPDarknet53](D:/tool/typora/image/image-20240506153850932.png)
-- **Neck:** [SPP](D:/tool/typora/image/image-20240506154252523.png)，[PAN](image\image-20240424105232005.png)
+- **Neck:** [SPP](D:/tool/typora/image/image-20240506154252523.png)，[PAN](image/image-20240424105232005.png)
 - **Head:** YOLOv3
 
 ![image-20240506153727889](D:/tool/typora/image/image-20240506153727889.png)
@@ -2458,7 +2458,7 @@ DIoU要比GIou更加符合目标框回归的机制，**将目标与anchor之间�
 
 **`PAN结构`**（Path Aggregation Network路径聚合网络）其实就是在`FPN`（从顶到底信息融合）的基础上加上了从底到顶的信息融合，如下图所示。
 
-<img src="image\image-20240424105232005.png" alt="image-20240424105232005" style="zoom:50%;" />
+<img src="image/image-20240424105232005.png" alt="image-20240424105232005" style="zoom:50%;" />
 
 ​		但YOLOv4的PAN结构和原始论文的融合方式又略有差异，如下图所示。图(a)是原始论文中的融合方式，即特征层之间融合时是直接通过相加的方式进行融合的，但在YOLOv4中是通过在通道方向Concat拼接的方式进行融合的。
 
@@ -2466,7 +2466,7 @@ DIoU要比GIou更加符合目标框回归的机制，**将目标与anchor之间�
 
 ​		v2,v3中采用基于anchor的目标边界框的预测，但在YOLOv4的论文中作者认为这样做不太合理，比如当真实目标中心点非常靠近网格的左上角点($\sigma(t_x)$和$\sigma(t_y)$应该趋近与0)，或者右下角点($\sigma(t_x)$和$\sigma(t_y)$应该趋近与1)时，网络的预测值需要负无穷或者正无穷时才能取到，而这种很极端的值网络一般无法达到。为了解决这个问题，作者引入了一个大于1的缩放系数${\rm scale}_{xy}$。
 
-<img src="image\image-20240424110100984.png" alt="image-20240424110100984" style="zoom:50%;" />
+<img src="image/image-20240424110100984.png" alt="image-20240424110100984" style="zoom:50%;" />
 
 通过引入这个系数，网络的预测值能够很容易达到0或者1，现在比较新的实现方法包括YOLOv5都将$ {\rm scale}_{xy}$设置为2。
 
@@ -2488,9 +2488,9 @@ DIoU要比GIou更加符合目标框回归的机制，**将目标与anchor之间�
 - **Neck**: [SPPF](D:/tool/typora/image/image-20240506152559520.png), `New CSP-PAN`
 - **Head**: `YOLOv3 Head`
 
-yolov5l[网络结构](image\yolov5.png)：
+yolov5l[网络结构](image/yolov5.png)：
 
-![yolov5](image\yolov5.png)
+![yolov5](image/yolov5.png)
 
 **Backbone**部分
 
@@ -2809,7 +2809,7 @@ print(VID_FORMATS)
 
 3. 全景分割 (Panoramic segmentation) Panoptic FPN
 
-   <img src="image\image-20240418105123837.png" alt="image-20240418105123837" style="zoom: 33%;" />
+   <img src="image/image-20240418105123837.png" alt="image-20240418105123837" style="zoom: 33%;" />
 
 语义分割任务常见的数据集格式：
 
@@ -2817,11 +2817,11 @@ print(VID_FORMATS)
 
 ​		注意，在语义分割中对应的标注图像（.png）用PIL的Image.open()函数读取时，默认是P模式，即一个单通道的图像。在背景处的像素值为0，目标边缘处用的像素值为255(训练时一般会忽略像素值为255的区域)，目标区域内根据目标的类别索引信息进行填充，例如人对应的目标索引是15，所以目标区域的像素值用15填充。
 
-![image-20240416151334054](image\image-20240416151334054.png)
+![image-20240416151334054](image/image-20240416151334054.png)
 
 - MS COCO
 
-![image-20240416151547223](image\image-20240416151547223.png)
+![image-20240416151547223](image/image-20240416151547223.png)
 
 
 
@@ -2831,11 +2831,11 @@ print(VID_FORMATS)
 - mean Accuracy
 - **mean IoU**
 
-![image-20240416151707470](image\image-20240416151707470.png)
+![image-20240416151707470](image/image-20240416151707470.png)
 
 实例：
 
-![image-20240416153121844](image\image-20240416153121844.png)
+![image-20240416153121844](image/image-20240416153121844.png)
 
 ## 卷积
 
@@ -2856,39 +2856,39 @@ print(VID_FORMATS)
 
 - 做正常卷积运算（填充0，步距1）
 
-  ![image-20240416160138964](image\image-20240416160138964.png)
+  ![image-20240416160138964](image/image-20240416160138964.png)
 
   |                        s=1, p=0, k=3                         |                        s=2, p=0, k=3                         |                        s=2, p=1, k=3                         |
   | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
   | ![img](https://img-blog.csdnimg.cn/dbb10ea62b89456ca567eb69fd31d18b.gif) | ![img](https://img-blog.csdnimg.cn/94191375edb942a087c54173a1dd4e75.gif) | ![img](https://img-blog.csdnimg.cn/dc6050f7df5042f886054f16d8e522d1.gif) |
 
-  ![image-20240416160604036](image\image-20240416160604036.png)
+  ![image-20240416160604036](image/image-20240416160604036.png)
 
 滑动卷积效率低下，采用新的形式：
 
 将卷积核转化为等效矩阵，将每个等效矩阵和输入相乘得到输出
 
-![image-20240416162027411](image\image-20240416162027411.png)
+![image-20240416162027411](image/image-20240416162027411.png)
 
 将输入feature map进行展平
 
-![image-20240416162230805](image\image-20240416162230805.png)
+![image-20240416162230805](image/image-20240416162230805.png)
 
 将等效矩阵进行展平
 
-![image-20240416162317002](image\image-20240416162317002.png)
+![image-20240416162317002](image/image-20240416162317002.png)
 
 将展平后的矩阵进行相乘
 
-![image-20240416162342888](image\image-20240416162342888.png)
+![image-20240416162342888](image/image-20240416162342888.png)
 
 已知C和O可否还原I？两侧都乘以C的转置
 
-![image-20240416162621216](image\image-20240416162621216.png)
+![image-20240416162621216](image/image-20240416162621216.png)
 
 为何需要将卷积核翻转处理的原因
 
-![image-20240416163857627](image\image-20240416163857627.png)
+![image-20240416163857627](image/image-20240416163857627.png)
 
 
 
@@ -2912,21 +2912,21 @@ print(VID_FORMATS)
 
 Layer4并没有利用到所有信息（感受野13×13）
 
-![image-20240416203804651](image\image-20240416203804651.png)
+![image-20240416203804651](image/image-20240416203804651.png)
 
 采用不同的膨胀系数
 
-![image-20240416204050693](image\image-20240416204050693.png)
+![image-20240416204050693](image/image-20240416204050693.png)
 
 使用普通的卷积核
 
-![image-20240416205028632](image\image-20240416205028632.png)
+![image-20240416205028632](image/image-20240416205028632.png)
 
 连续使用膨胀卷积时如何设置膨胀系数？
 
 #### Hybrid Dilated Convolution (HDC)设计准则
 
-![image-20240416210253450](image\image-20240416210253450.png)
+![image-20240416210253450](image/image-20240416210253450.png)
 
 另外公约数不能大于1（因此膨胀系数都有1）
 
@@ -2938,11 +2938,11 @@ Layer4并没有利用到所有信息（感受野13×13）
 
 网络结构：
 
-![image-20240416195121012](image\image-20240416195121012.png)
+![image-20240416195121012](image/image-20240416195121012.png)
 
-![image-20240416194758518](image\image-20240416194758518.png)
+![image-20240416194758518](image/image-20240416194758518.png)
 
-![image-20240416194910508](image\image-20240416194910508.png)
+![image-20240416194910508](image/image-20240416194910508.png)
 
 ### 2、DeepLab V1
 
