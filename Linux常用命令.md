@@ -265,7 +265,7 @@ Ubuntu启用
 
 ## make/makefile/cmake/nmake区别
 
-![image-20250222164307490](D:/tool/typora/image/image-20250222164307490.png)
+![image-20250222164307490](image/image-20250222164307490.png)
 
 ### gcc
 

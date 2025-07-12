@@ -3668,11 +3668,11 @@ C++程序在执行时，将内存大方向划分为**4个区域**
 - 栈区：由编译器自动分配释放, 存放函数的参数值,局部变量等
 - 堆区：由程序员分配和释放,若程序员不释放,程序结束时由操作系统回收
 
-<img src="D:/tool/typora/image/image-20250428151015810.png" alt="image-20250428151015810" style="zoom:67%;" />
+<img src="image/image-20250428151015810.png" alt="image-20250428151015810" style="zoom:67%;" />
 
 **STM32存储器分配**
 
-<img src="D:/tool/typora/image/image-20250428151211170.png" alt="image-20250428151211170" style="zoom:50%;" />
+<img src="image/image-20250428151211170.png" alt="image-20250428151211170" style="zoom:50%;" />
 
 随机存储器—**RAM**：RAM是与CPU直接交换数据的内部存储器，也叫**主存**（内存）。
 
@@ -17352,21 +17352,21 @@ int main() {
 
 **性能分析**
 
-<img src="D:/tool/typora/image/image-20250508153013067.png" alt="image-20250508153013067" style="zoom:50%;" />
+<img src="image/image-20250508153013067.png" alt="image-20250508153013067" style="zoom:50%;" />
 
 **单链表**
 
-![image-20250508152645703](D:/tool/typora/image/image-20250508152645703.png)
+![image-20250508152645703](image/image-20250508152645703.png)
 
 **双链表**
 
 
 
-<img src="D:/tool/typora/image/image-20250508152714559.png" alt="image-20250508152714559" style="zoom:150%;" />
+<img src="image/image-20250508152714559.png" alt="image-20250508152714559" style="zoom:150%;" />
 
 **循环列表**
 
-<img src="D:/tool/typora/image/image-20250508152742716.png" alt="image-20250508152742716" style="zoom: 50%;" />
+<img src="image/image-20250508152742716.png" alt="image-20250508152742716" style="zoom: 50%;" />
 
 
 
